@@ -9,6 +9,7 @@ import com.devagi.meuprojeto.model.Cliente;
 import com.devagi.meuprojeto.repository.ClienteRepository;
 import com.devagi.meuprojeto.service.ClienteService;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequestMapping("/clientes") // define o caminho base da API (a rota base)
 public class ClienteController {
 
+    @Autowired
     private final ClienteService service;
 
     public ClienteController(ClienteService service){
