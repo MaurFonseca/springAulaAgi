@@ -51,8 +51,8 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setEmail(dto.getEmail());
         cliente.setSenha(dto.getSenha());
-        ClienteResponseDTO salvo = toResponseDTO(cliente);
-        return salvo;
+        Cliente salvo = repository.save(cliente);
+        return toResponseDTO(salvo);
     }
 
     public ClienteResponseDTO atualizar(Long id, ClienteRequestDTO dto){
@@ -62,8 +62,8 @@ public class ClienteService {
         }
         cliente.setNome(dto.getNome()); // objeto cliente, settando o nome como paramaetro passando o objeto dto que contem nome onde usamos o get para pegar esse nome e poder armazenar em cliente
         cliente.setEmail(dto.getEmail());
-        ClienteResponseDTO atualizado = toResponseDTO(cliente);
-        return atualizado;
+        Cliente atualizado = repository.save(cliente);
+        return toResponseDTO(atualizado);
     }
 
     public void deletar(Long id){
