@@ -15,26 +15,5 @@ public class Cliente {
 
     private String nome;
     private String email;
-
-
-    // Por algum motivo o @Data não estava funcionando 100% então para evitar problemas criei os getter e setter manualmente
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    private String senha;
 }
