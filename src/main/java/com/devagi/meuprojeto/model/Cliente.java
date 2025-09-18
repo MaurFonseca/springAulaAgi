@@ -8,6 +8,7 @@ import lombok.*;
 @Data // (Lombok) gera os getters, setters, hashCode, equals e toString.
 @NoArgsConstructor // (Lombok) gera construtor sem argumento, deve ser sempre gerado primeiro antes dos demais
 @AllArgsConstructor // (Lombok) gera construtor com todos atributos/argumentos
+@Table(name = "clientes")
 public class Cliente {
     @Id //marca o campo como chave primaria do BD
     @GeneratedValue(strategy = GenerationType.IDENTITY) // vai gerar o valor de ID automaticamente
