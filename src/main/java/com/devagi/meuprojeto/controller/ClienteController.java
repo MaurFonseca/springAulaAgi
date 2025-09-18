@@ -3,8 +3,11 @@ package com.devagi.meuprojeto.controller;
 // Classe controladora da API REST
 
 
+import com.devagi.meuprojeto.dto.ClienteRequestDTO;
+import com.devagi.meuprojeto.dto.ClienteResponseDTO;
 import com.devagi.meuprojeto.model.Cliente;
 import com.devagi.meuprojeto.repository.ClienteRepository;
+import com.devagi.meuprojeto.service.ClienteService;
 import lombok.Data;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,40 +17,34 @@ import java.util.List;
 @RequestMapping("/clientes") // define o caminho base da API (a rota base)
 public class ClienteController {
 
-    private final ClienteRepository repository;
-    /*
-    Aqui estamos criando uma relação/injeção de dependencia
-    O Spring boot injeta a implementação concreta do ClienteRepository no construtor do ClienteController
-     */
-    public ClienteController(ClienteRepository repository){
-        this.repository = repository;
+    private final ClienteService service;
+
+    public ClienteController(ClienteService service){
+        this.service = service;
     }
 
     @GetMapping //Define o metodo GET HTTP -> para "buscar"
-    public List<Cliente> listar(){
-        return repository.findAll(); // ->  Aqui criamos o metodo que irá buscar na API a lista de clientes e vai nos retornar um List do tipo Cliente com todos os clientes no repositorio
+    public List<ClienteResponseDTO> listar(){
+        return service.listar();
     }
 
     @GetMapping("/{id}")
-    public Cliente buscar(@PathVariable Long id){ //metodo para buscar um cliente especifico pelo seu id, onde o @PathVariable pega valores da URL
-        return repository.findById(id).orElseThrow(()-> new RuntimeException("Cliente não encontrado"));
+    public ClienteResponseDTO buscar(@PathVariable Long id){ //metodo para buscar um cliente especifico pelo seu id, onde o @PathVariable pega valores da URL
+        return service.buscar(id);
     }
 
     @PostMapping // define o metodo POST HTTP para adicionar/postar
-    public Cliente salvar(@RequestBody Cliente cliente){ // o @RequestBody converte o JSON da requisição em um objeto java, no caso o Cliente
-        return repository.save(cliente);
+    public ClienteResponseDTO salvar(@RequestBody ClienteRequestDTO cliente){ // o @RequestBody converte o JSON da requisição em um objeto java, no caso o Cliente
+        return service.salvar(cliente);
     }
 
     @PutMapping("/{id}") // definie o metodo PUT HTTP para atualizar com parametros, nesse caso atualizar um cliente pela ID
-    public Cliente atualizar(@PathVariable Long id, @RequestBody Cliente dados){ // Metodo retornara um save de Cliente a partir do caminho (@Path...) e utilizara o JSON (@Request...) do objeto Cliente
-        Cliente cliente = repository.findById(id).orElseThrow(()-> new RuntimeException("Cliente não encontrado"));
-        cliente.setNome(dados.getNome()); // objeto cliente, settando o nome como paramaetro passando o objeto dados que contem nome onde usamos o get para pegar esse nome e poder armazenar em cliente
-        cliente.setEmail(dados.getEmail());
-        return repository.save(cliente); //  fazendo um save no nosso repositorio desse cliente
+    public ClienteResponseDTO atualizar(@PathVariable Long id, @RequestBody ClienteRequestDTO dados){ // Metodo retornara um save de Cliente a partir do caminho (@Path...) e utilizara o JSON (@Request...) do objeto Cliente
+        return service.atualizar(id, dados);
     }
 
     @DeleteMapping("{id}")
     public void deletar(@PathVariable Long id){
-        repository.deleteById(id);
+        service.deletar(id);
     }
 }
